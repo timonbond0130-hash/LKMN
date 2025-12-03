@@ -1,0 +1,50 @@
+name: LKMN_L_x4
+model_type: SRModel
+scale: 4
+num_gpu: 1  # set num_gpu: 0 for cpu mode
+manual_seed: 10
+# python basicsr/test.py -opt options/test/test_LKMN_L_x4.yml
+
+datasets:
+  test_1:
+    name: set5
+    type: PairedImageDataset
+    dataroot_gt: /backup/dataset/classical_SR_datasets/Set5/GTmod12
+    dataroot_lq: /backup/dataset/classical_SR_datasets/Set5/LRbicx4
+    io_backend:
+      type: disk
+
+# network structures
+network_g:
+  type: LKMN
+  in_channels: 3
+  channels: 64
+  out_channels: 3
+  upscale: 4
+  num_block: 12
+  large_kernel: 31
+  split_group: 4
+
+# path
+path:
+  pretrain_network_g: /backup/github/LKMN/experiments/pretrained_models/LKMN_L_x4_DIV2K.pth
+  param_key_g: params_ema
+  strict_load_g: true
+
+# validation settings
+val:
+  save_img: true
+  suffix: ~  # add suffix to saved images, if None, use exp name
+  self_ensemble_testing: false
+
+  metrics:
+    PSNR: # metric name, can be arbitrary
+      type: calculate_psnr
+      crop_border: 4
+      test_y_channel: true
+      better: higher
+    SSIM:
+      type: calculate_ssim
+      crop_border: 4
+      test_y_channel: true
+      better: higher

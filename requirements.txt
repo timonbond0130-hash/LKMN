@@ -13,3 +13,6 @@ torch>=1.7
 torchvision
 tqdm
 yapf
+boto3
+thop
+pyiqa

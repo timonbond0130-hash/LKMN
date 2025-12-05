@@ -43,16 +43,13 @@ def main():
     output_path = os.path.join(work_dir, "output_4k.mp4")
 
     print(f"⬇️  Downloading {args.input_url} → {input_path}")
-    # download_to_file(args.input_url, input_path)
+    download_to_file(args.input_url, input_path)
 
     # TODO: call your LKMN multi-GPU pipeline here.
     # For now we just leave a placeholder:
     print("⚙️  Running LKMN upscaling (placeholder)...")
     # You will replace this with your real function, like:
     upscale_lkmn(input_path, output_path, scale=args.scale)
-
-    # Temporary placeholder: just copy input to output
-    subprocess.run(["cp", input_path, output_path], check=True)
 
     print(f"⬆️  Uploading {output_path} → {args.output_s3}")
     upload_to_s3(output_path, args.output_s3)

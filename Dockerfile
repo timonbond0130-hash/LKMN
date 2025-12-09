@@ -1,8 +1,11 @@
 FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    git ffmpeg wget python3-pip python3-dev python3-opencv
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        git ffmpeg wget python3 python3-pip python3-dev python3-opencv tzdata && \
+    rm -rf /var/lib/apt/lists/*
 
 # Work directory inside container
 WORKDIR /workspace

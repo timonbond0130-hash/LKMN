@@ -17,8 +17,10 @@ COPY . /workspace
 RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt
 
+# Serverless handler
+COPY runpod_handler.py /workspace/runpod_handler.py
+
 # Set python to python3
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
-# Default entrypoint (can be overridden)
-ENTRYPOINT ["python3", "upscale_job.py"]
+CMD ["python3", "-m", "runpod"]

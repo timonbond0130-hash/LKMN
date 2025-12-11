@@ -16,3 +16,4 @@ yapf
 boto3
 thop
 pyiqa
+runpod

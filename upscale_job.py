@@ -10,7 +10,12 @@ from lkmn_upscaler import upscale_lkmn, test_pipeline_cpu
 def download_to_file(url: str, dst_path: str):
     if url.startswith("s3://"):
         # S3 → local
-        s3 = boto3.client("s3")
+        s3 = boto3.client(
+            "s3",
+            aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+            aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+            region_name=os.getenv("AWS_DEFAULT_REGION", "eu-west-1"),
+        )
         _, path = url.split("s3://", 1)
         bucket, key = path.split("/", 1)
         s3.download_file(bucket, key, dst_path)
@@ -24,7 +29,12 @@ def download_to_file(url: str, dst_path: str):
 
 def upload_to_s3(src_path: str, s3_uri: str):
     assert s3_uri.startswith("s3://")
-    s3 = boto3.client("s3")
+    s3 = boto3.client(
+        "s3",
+        aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+        aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+        region_name=os.getenv("AWS_DEFAULT_REGION", "eu-west-1"),
+    )
     _, path = s3_uri.split("s3://", 1)
     bucket, key = path.split("/", 1)
     s3.upload_file(src_path, bucket, key)
